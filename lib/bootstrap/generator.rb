@@ -30,6 +30,16 @@ module FHIR
         generator.generate_resources
       end
 
+      def self.load_models!
+        Dir.glob(File.join(lib,'fhir','*.rb')).each(&method(:load))
+        Dir.glob(File.join(lib,'fhir','**','*.rb')).each(&method(:load))
+      end
+
+      def self.ensure_generated_and_loaded
+        generate! unless generated?
+        load_models!
+      end
+
       def initialize    
         defns = File.expand_path '../../definitions',File.dirname(File.absolute_path(__FILE__))
 
